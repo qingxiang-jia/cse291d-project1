@@ -10,7 +10,7 @@ package test;
 class Timeout extends TestFailed
 {
     /** Constructs a <code>Timeout</code> object. */
-    Timeout()
+    public Timeout()
     {
         super("test timed out");
     }
