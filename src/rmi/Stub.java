@@ -19,7 +19,7 @@ import java.net.UnknownHostException;
  */
 public abstract class Stub {
   /**
-   * Creates a stub, given a skeleton with an assigned adress.
+   * Creates a stub, given a skeleton with an assigned address.
    * <p>
    * <p>
    * The stub is assigned the address of the skeleton. The skeleton must
