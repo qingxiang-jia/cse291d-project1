@@ -1,6 +1,7 @@
-package rmi;
+package unit.rmi;
 
 import test.*;
+import rmi.*;
 
 /** Sample unit test for the class <code>SampleClassUnderTest</code>.
 
