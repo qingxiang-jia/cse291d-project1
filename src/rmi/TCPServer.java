@@ -8,11 +8,11 @@ import java.net.ServerSocket;
  * ref http://tutorials.jenkov.com/java-multithreaded-servers/multithreaded-server.html
  */
 public class TCPServer implements Runnable {
-  InetAddress myAddr;
+  InetAddress myAddress;
   ServerSocket serverSocket;
 
   public TCPServer(InetAddress serverAddr) {
-    myAddr = serverAddr;
+    myAddress = serverAddr;
   }
 
   public void run() {
