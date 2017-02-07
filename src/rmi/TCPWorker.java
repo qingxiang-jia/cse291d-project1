@@ -34,6 +34,7 @@ public class TCPWorker implements Runnable {
     try {
       out.close();
       in.close();
+      TCPServer.root.deregisterThread(Thread.currentThread());
     } catch(IOException e) {
       System.out.println("Failed to close objectStreams, exiting");
       System.exit(-1);

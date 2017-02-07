@@ -1,9 +1,14 @@
 package rmi;
 
+import sun.tools.jconsole.Worker;
+
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
+import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * A multi-thread TCP server the skeleton will use. ref
@@ -11,12 +16,19 @@ import java.net.UnknownHostException;
  */
 public class TCPServer implements Runnable {
   int serverPort;
+  Set<Thread> threads;
   InetAddress serverAddress;
   ServerSocket serverSocket;
+  static TCPServer root;
   boolean stopped = false;
 
   public TCPServer(int serverPort) {
-    this.serverPort = serverPort;
+    initServer(serverPort);
+  }
+
+  private void initServer(int serverPort) {
+    threads = new HashSet<>();
+    root = this;
   }
 
   public TCPServer(String serverIP, int serverPort) {
@@ -26,13 +38,30 @@ public class TCPServer implements Runnable {
       System.out.println("Unknown host, server exiting");
       System.exit(-1);
     }
-    this.serverPort = serverPort;
+    initServer(serverPort);
   }
 
   public void run() {
     // open serverSocket that listens to incoming connections
     initServerSocket();
-
+    while(!isStopped()) {
+      Socket clientSocket = null;
+      try {
+        clientSocket = this.serverSocket.accept();
+      } catch (IOException e) {
+        if (isStopped()) {
+          System.out.println("Server has stopped");
+          return;
+        } else {
+          System.out.println("Failed to accept client connection");
+          e.printStackTrace();
+        }
+      }
+      Thread workerThread = new Thread(new TCPWorker(clientSocket));
+      registerThread(workerThread);
+      workerThread.start();
+    }
+    System.out.println("TCPServer stopped");
   }
 
   private synchronized boolean isStopped() {
@@ -55,6 +84,16 @@ public class TCPServer implements Runnable {
     } catch (IOException e) {
       System.out.println("Open serverSocket at port " + this.serverSocket + " failed, exiting");
       System.exit(-1);
+    }
+  }
+
+  public void registerThread(Thread t) {
+    threads.add(t);
+  }
+
+  public synchronized void deregisterThread(Thread t) {
+    if (threads.contains(t)) {
+      threads.remove(t);
     }
   }
 }
