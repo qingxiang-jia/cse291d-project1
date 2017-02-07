@@ -23,8 +23,7 @@ public class UnitTests {
   public static void main(String[] arguments) {
     // Create the test list, the series object, and run the test series.
     @SuppressWarnings("unchecked")
-    Class<? extends Test>[] tests =
-        new Class[]{SampleUnitTest.class};
+    Class<? extends Test>[] tests = new Class[] {SampleUnitTest.class};
     Series series = new Series(tests);
     SeriesReport report = series.run(3, System.out);
 

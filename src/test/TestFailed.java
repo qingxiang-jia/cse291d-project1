@@ -7,8 +7,7 @@ public class TestFailed extends Exception {
   /**
    * Constructs a <code>TestFailed</code> object.
    */
-  protected TestFailed() {
-  }
+  protected TestFailed() {}
 
   /**
    * Constructs a <code>TestFailed</code> object from a message string.
@@ -18,8 +17,7 @@ public class TestFailed extends Exception {
   }
 
   /**
-   * Constructs a <code>TestFailed</code> object from a message string and an
-   * underlying cause.
+   * Constructs a <code>TestFailed</code> object from a message string and an underlying cause.
    */
   public TestFailed(String message, Throwable cause) {
     super(message, cause);

@@ -8,18 +8,16 @@ import test.TestFailed;
  * Sample unit test for the class <code>SampleClassUnderTest</code>.
  * <p>
  * <p>
- * Unit tests, unlike conformance tests, are located in the same package as the
- * classes they are testing. This means they are not restricted to testing only
- * the public interfaces of the classes in each package - they can also access
- * the package-private classes and methods in their package.
+ * Unit tests, unlike conformance tests, are located in the same package as the classes they are
+ * testing. This means they are not restricted to testing only the public interfaces of the classes
+ * in each package - they can also access the package-private classes and methods in their package.
  * <p>
  * <p>
- * Unit tests are isolated from the code they are testing. They are kept under
- * the <code>unit/</code> directory.
+ * Unit tests are isolated from the code they are testing. They are kept under the
+ * <code>unit/</code> directory.
  * <p>
  * <p>
- * Delete this class and <code>SampleClassUnderTest</code> before submitting
- * your code.
+ * Delete this class and <code>SampleClassUnderTest</code> before submitting your code.
  */
 public class SampleUnitTest extends Test {
   /**

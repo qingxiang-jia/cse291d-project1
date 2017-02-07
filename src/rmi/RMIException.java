@@ -12,8 +12,7 @@ public class RMIException extends Exception {
   }
 
   /**
-   * Creates an <code>RMIException</code> with a message string and the given
-   * cause.
+   * Creates an <code>RMIException</code> with a message string and the given cause.
    */
   public RMIException(String message, Throwable cause) {
     super(message, cause);

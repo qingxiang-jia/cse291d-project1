@@ -7,8 +7,7 @@ public class InfiniteLoopTest extends Test {
   /**
    * Test notice.
    */
-  public static final String notice =
-      "checking timeout with an infinite loop (should fail)";
+  public static final String notice = "checking timeout with an infinite loop (should fail)";
 
   /**
    * Flag used to force the main (looping) thread to terminate.
@@ -19,8 +18,8 @@ public class InfiniteLoopTest extends Test {
    * Performs the test.
    * <p>
    * <p>
-   * This method enters an infinite loop, which may only be terminated by
-   * <code>clean</code> upon termination of the test by timeout.
+   * This method enters an infinite loop, which may only be terminated by <code>clean</code> upon
+   * termination of the test by timeout.
    */
   @Override
   protected synchronized void perform() {

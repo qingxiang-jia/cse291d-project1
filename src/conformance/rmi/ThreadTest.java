@@ -10,10 +10,10 @@ import test.TestFailed;
  * Checks that the skeleton supports multiple simultaneous connections.
  * <p>
  * <p>
- * These tests are best performed after <code>SkeletonTest</code> and
- * <code>StubTest</code>. This test starts a skeleton and creates a stub of
- * type <code>TestInterface</code>. It then calls <code>rendezvous</code> on
- * the stub from two different threads. The test succeeds if both calls return.
+ * These tests are best performed after <code>SkeletonTest</code> and <code>StubTest</code>. This
+ * test starts a skeleton and creates a stub of type <code>TestInterface</code>. It then calls
+ * <code>rendezvous</code> on the stub from two different threads. The test succeeds if both calls
+ * return.
  */
 public class ThreadTest extends Test {
   /**
@@ -23,8 +23,7 @@ public class ThreadTest extends Test {
   /**
    * Prerequisites.
    */
-  public static final Class[] prerequisites =
-      new Class[]{SkeletonTest.class, StubTest.class};
+  public static final Class[] prerequisites = new Class[] {SkeletonTest.class, StubTest.class};
 
   /**
    * Server object used in the test.
@@ -89,8 +88,7 @@ public class ThreadTest extends Test {
   }
 
   /**
-   * Wakes the other thread, which is waiting for the reply from the
-   * server.
+   * Wakes the other thread, which is waiting for the reply from the server.
    */
   private class SecondThread implements Runnable {
     /**
@@ -101,15 +99,14 @@ public class ThreadTest extends Test {
       try {
         stub.rendezvous();
       } catch (Throwable t) {
-        failure(new TestFailed("unable to rendezvous in second " +
-            "thread", t));
+        failure(new TestFailed("unable to rendezvous in second " + "thread", t));
       }
     }
   }
 
   /**
-   * Test skeleton class that fails the test when an exception is received in
-   * one of the skeleton's threads.
+   * Test skeleton class that fails the test when an exception is received in one of the skeleton's
+   * threads.
    */
   private class TestSkeleton extends Skeleton<TestInterface> {
     /**

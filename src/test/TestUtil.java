@@ -12,9 +12,8 @@ public abstract class TestUtil {
    *
    * @param array1 The first array.
    * @param array2 The second array.
-   * @return <code>true</code> if the two arrays contain the same elements,
-   * with the same counts, regardless of their order, and
-   * <code>false</code> otherwise.
+   * @return <code>true</code> if the two arrays contain the same elements, with the same counts,
+   *         regardless of their order, and <code>false</code> otherwise.
    */
   public static <T> boolean sameElements(T[] array1, T[] array2) {
     // If the arrays have different sizes, they cannot have the same

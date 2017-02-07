@@ -18,8 +18,7 @@ public class TemporaryDirectoryTest extends Test {
   /**
    * Test notice.
    */
-  public final static String notice =
-      "checking temporary directory creation and deletion";
+  public final static String notice = "checking temporary directory creation and deletion";
 
   /**
    * Temporary directory object.
@@ -54,14 +53,12 @@ public class TemporaryDirectoryTest extends Test {
 
     // Make sure the two directories are not the same.
     if (root.equals(second_root)) {
-      throw new TestFailed("temporary directories created with the " +
-          "same path");
+      throw new TestFailed("temporary directories created with the " + "same path");
     }
 
     // Make sure both directories are indeed directories and exist.
     if (!root.isDirectory() || !second_root.isDirectory()) {
-      throw new TestFailed("temporary directory does not exist or is " +
-          "not a directory");
+      throw new TestFailed("temporary directory does not exist or is " + "not a directory");
     }
 
     // Delete the second directory - it is no longer needed.
@@ -75,10 +72,9 @@ public class TemporaryDirectoryTest extends Test {
 
     // Try to add a file to the first directory.
     try {
-      directory.add(new String[]{"subdir", "file.txt"}, "contents");
+      directory.add(new String[] {"subdir", "file.txt"}, "contents");
     } catch (Exception e) {
-      throw new TestFailed("unable to create file in temporary directory",
-          e);
+      throw new TestFailed("unable to create file in temporary directory", e);
     }
 
     // Delete the first directory. This ensures that recursive deletion

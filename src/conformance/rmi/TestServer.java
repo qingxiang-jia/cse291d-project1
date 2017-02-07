@@ -12,20 +12,18 @@ import java.io.FileNotFoundException;
  */
 public class TestServer implements TestInterface {
   /**
-   * The sleeping thread does not return until this becomes
-   * <code>false</code>.
+   * The sleeping thread does not return until this becomes <code>false</code>.
    */
   private boolean sleeping = true;
   /**
-   * If <code>true</code>, the next thread to call <code>rendezvous</code>
-   * should wake all sleeping threads.
+   * If <code>true</code>, the next thread to call <code>rendezvous</code> should wake all sleeping
+   * threads.
    */
   private boolean wake = false;
 
   // Methods documented in TestInterface.java.
   @Override
-  public Object method(boolean throw_exception)
-      throws RMIException, FileNotFoundException {
+  public Object method(boolean throw_exception) throws RMIException, FileNotFoundException {
     if (throw_exception)
       throw new FileNotFoundException();
     else

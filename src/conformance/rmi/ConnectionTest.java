@@ -13,23 +13,20 @@ import java.net.InetSocketAddress;
  * Tests complete connection between stub and skeleton.
  * <p>
  * <p>
- * This test starts a skeleton. Two stubs are then created - one implicitly
- * from the skeleton, and one by specifying the address directly. Both stubs
- * are then tested by calling a method in each. The test covers the passing of
- * arguments, transmission of return values, and transmission of remote
- * exceptions.
+ * This test starts a skeleton. Two stubs are then created - one implicitly from the skeleton, and
+ * one by specifying the address directly. Both stubs are then tested by calling a method in each.
+ * The test covers the passing of arguments, transmission of return values, and transmission of
+ * remote exceptions.
  */
 public class ConnectionTest extends Test {
   /**
    * Test notice.
    */
-  public static final String notice =
-      "checking connection between stub and skeleton";
+  public static final String notice = "checking connection between stub and skeleton";
   /**
    * Prerequisites.
    */
-  public static final Class[] prerequisites =
-      new Class[]{SkeletonTest.class, StubTest.class};
+  public static final Class[] prerequisites = new Class[] {SkeletonTest.class, StubTest.class};
 
   /**
    * Address at which the test skeleton will run.
@@ -104,8 +101,7 @@ public class ConnectionTest extends Test {
    * Runs tests with a given stub.
    * <p>
    * <p>
-   * Attempts to use the stub to get a regular result and an exception from
-   * the server.
+   * Attempts to use the stub to get a regular result and an exception from the server.
    *
    * @throws TestFailed If any of the tests fail.
    */
@@ -121,8 +117,7 @@ public class ConnectionTest extends Test {
     // Attempt to get an exception.
     try {
       stub.method(true);
-      throw new TestFailed("exception expected but not received from " +
-          "stub");
+      throw new TestFailed("exception expected but not received from " + "stub");
     } catch (TestFailed e) {
       throw e;
     } catch (FileNotFoundException e) {
@@ -132,13 +127,12 @@ public class ConnectionTest extends Test {
   }
 
   /**
-   * Test skeleton class that fails the test when an exception is received in
-   * one of the skeleton's threads.
+   * Test skeleton class that fails the test when an exception is received in one of the skeleton's
+   * threads.
    */
   private class TestSkeleton extends Skeleton<TestInterface> {
     /**
-     * Creates a <code>TestSkeleton</code> at the appropriate address, with
-     * a new server object.
+     * Creates a <code>TestSkeleton</code> at the appropriate address, with a new server object.
      */
     TestSkeleton() {
       super(TestInterface.class, new TestServer(), address);
