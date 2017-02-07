@@ -1,7 +1,11 @@
 package rmi;
 
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 import java.net.InetSocketAddress;
 import java.net.UnknownHostException;
+import java.util.Arrays;
+import java.util.HashSet;
 
 /**
  * RMI stub factory.
@@ -107,6 +111,25 @@ public abstract class Stub {
    *                              this interface cannot be dynamically created.
    */
   public static <T> T create(Class<T> c, InetSocketAddress address) {
-    throw new UnsupportedOperationException("not implemented");
+	  if(!isRemoteInterface(c)){
+		  NonRemoteInterfaceException e = new NonRemoteInterfaceException(c.getName() + " is not a remote interface");
+		  System.out.println(e.getMessage());
+		  return null;
+	  }
+	  return createProxy(c, new MyInvocationHandler(c, address));
+  }
+  
+  private static boolean isRemoteInterface(Class c){
+	  if(!c.isInterface())
+		  return false;
+	  for(Method m : c.getDeclaredMethods()){
+		  if(!new HashSet<>(Arrays.asList(m.getExceptionTypes())).contains(RMIException.class))
+			  return false;
+	  }
+	  return true;
+  }
+  
+  private static <T> T createProxy(Class c, MyInvocationHandler handler){
+	  return (T)Proxy.newProxyInstance(MyInvocationHandler.class.getClassLoader(), new Class[]{c.getClass()}, handler);
   }
 }
