@@ -6,12 +6,12 @@ import java.net.Socket;
 /**
  * This is the actual server that handles each client. This runs in a separate thread.
  */
-public class TCPSWorker implements Runnable {
+public class TCPWorker implements Runnable {
   Socket clientSocket;
   ObjectInputStream in;
   ObjectOutputStream out;
 
-  public TCPSWorker(Socket clientSocket) {
+  public TCPWorker(Socket clientSocket) {
     this.clientSocket = clientSocket;
   }
 
