@@ -2,6 +2,7 @@ package rmi;
 
 import java.io.*;
 import java.net.Socket;
+import java.sql.SQLOutput;
 
 /**
  * This is the actual server that handles each client. This runs in a separate thread.
@@ -17,12 +18,22 @@ public class TCPWorker implements Runnable {
 
   public void run() {
     setupObjectStreams();
+    test();
+  }
+
+  public void test() {
+    String messageFromClient = (String) receive(); // blocking
+    System.out.println("Received: " + messageFromClient);
+    String messageFromServer = "message from server";
+    send(messageFromServer);
+    stopWorker();
   }
 
   private void setupObjectStreams() {
     try {
-      in = new ObjectInputStream(clientSocket.getInputStream());
       out = new ObjectOutputStream(clientSocket.getOutputStream());
+      out.flush();
+      in = new ObjectInputStream(clientSocket.getInputStream());
     } catch (IOException e) {
       System.out.println("Failed to setup objectStreams, exiting");
       stopWorker();
@@ -56,6 +67,7 @@ public class TCPWorker implements Runnable {
     } catch (IOException e) {
       System.out.println("Failed to read object from ObjectInputStream");
       e.printStackTrace();
+      stopWorker();
     } catch (ClassNotFoundException CNFExeption) {
       System.out.println("This exception should never been thrown, something is wrong");
       CNFExeption.printStackTrace();

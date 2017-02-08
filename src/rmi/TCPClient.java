@@ -18,15 +18,18 @@ public class TCPClient {
   public TCPClient(String serverIP, int serverPort) {
     this.serverIP = serverIP;
     this.serverPort = serverPort;
+    initClient();
   }
 
   public void initClient() {
     try {
       socketToServer = new Socket(serverIP, serverPort);
       out = new ObjectOutputStream(socketToServer.getOutputStream());
+      out.flush();
       in = new ObjectInputStream(socketToServer.getInputStream());
     } catch (IOException ioe) {
       ioe.printStackTrace();
+      stopClient();
     }
   }
 
@@ -46,5 +49,13 @@ public class TCPClient {
       e.printStackTrace();
     }
     return obj;
+  }
+
+  public void stopClient() {
+    try {
+      socketToServer.close();
+    } catch (IOException ioe) {
+      ioe.printStackTrace();
+    }
   }
 }
