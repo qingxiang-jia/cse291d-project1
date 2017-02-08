@@ -20,6 +20,8 @@ public class TestTCPServer {
     System.out.println("wake");
     TCPClient tcpClient = new TCPClient("localhost", port);
     tcpClient.send("message from client");
+    String messageFromServer = (String) tcpClient.receive();
+    System.out.println("Message from server: " + messageFromServer);
     tcpClient.stopClient();
     tcpServer.stopServer();
   }
