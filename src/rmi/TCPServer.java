@@ -43,7 +43,7 @@ public class TCPServer<T> implements Runnable {
   private void init() {
     threads = new HashSet<>();
     state = RUNNING;
-    serverAddress = new InetSocketAddress(serverAddress.getAddress(), serverAddress.getPort()); // in case of restart
+    serverAddress = new InetSocketAddress(serverSocket.getInetAddress(), serverSocket.getLocalPort()); // in case of restart
   }
 
   public void run() {
