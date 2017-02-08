@@ -1,7 +1,5 @@
 package rmi;
 
-import sun.tools.jconsole.Worker;
-
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
