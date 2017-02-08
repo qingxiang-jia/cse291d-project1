@@ -3,11 +3,11 @@ package rmi;
 import java.io.Serializable;
 import java.lang.reflect.Method;
 
-public class MessageToTransmit implements Serializable {
+public class RemoteCall implements Serializable {
   private Method method;
   private Object[] args;
 
-  public MessageToTransmit(Method method, Object[] args) {
+  public RemoteCall(Method method, Object[] args) {
     this.method = method;
     this.args = args;
   }
