@@ -14,20 +14,19 @@ import java.util.Set;
 public class TCPServer<T> implements Runnable {
   static final int DEFAULT_BACKLOG = 50;
   Set<Thread> threads;
+  InetSocketAddress serverAddress;
   ServerSocket serverSocket;
-  boolean stopped = false;
   Skeleton<T> skeleton;
+  static final int STOPPED = 0;
+  static final int RUNNING = 1;
+  int state = STOPPED;
 
-  public TCPServer() {
-    try {
-      serverSocket = new ServerSocket(); // random port, random IP
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
+  public TCPServer() throws IOException {
+    serverSocket = new ServerSocket(); // random port, random IP
     init();
   }
 
-  public TCPServer(int port) {
+  public TCPServer(int port) { // not used by skeleton
     try {
       serverSocket = new ServerSocket(port); // random IP
     } catch (IOException e) {
@@ -36,17 +35,15 @@ public class TCPServer<T> implements Runnable {
     init();
   }
 
-  public TCPServer(InetSocketAddress ipPort) {
-    try {
-      serverSocket = new ServerSocket(ipPort.getPort(), DEFAULT_BACKLOG, ipPort.getAddress());
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
+  public TCPServer(InetSocketAddress ipPort) throws IOException {
+    serverSocket = new ServerSocket(ipPort.getPort(), DEFAULT_BACKLOG, ipPort.getAddress());
     init();
   }
 
   private void init() {
     threads = new HashSet<>();
+    state = RUNNING;
+    serverAddress = new InetSocketAddress(serverAddress.getAddress(), serverAddress.getPort()); // in case of restart
   }
 
   public void run() {
@@ -73,17 +70,27 @@ public class TCPServer<T> implements Runnable {
   }
 
   private synchronized boolean isStopped() {
-    return this.stopped;
+    return (state == STOPPED);
   }
 
   public synchronized void stopServer() {
-    this.stopped = true;
     try {
       this.serverSocket.close();
     } catch (IOException e) {
       System.out.println("Failed to stop serverSocket");
       e.printStackTrace();
     }
+    state = STOPPED;
+  }
+
+  public synchronized void restartServer() {
+    try {
+      serverSocket = new ServerSocket(serverAddress.getPort(), DEFAULT_BACKLOG, serverAddress.getAddress());
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    state = RUNNING;
+    run();
   }
 
   public void registerThread(Thread t) {
@@ -94,5 +101,9 @@ public class TCPServer<T> implements Runnable {
     if (threads.contains(t)) {
       threads.remove(t);
     }
+  }
+
+  public void setSkeleton(Skeleton<T> skeleton) {
+    this.skeleton = skeleton;
   }
 }

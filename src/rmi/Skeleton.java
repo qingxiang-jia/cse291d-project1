@@ -1,7 +1,7 @@
 package rmi;
 
+import java.io.IOException;
 import java.lang.reflect.Method;
-import java.net.InetAddress;
 import java.net.InetSocketAddress;
 
 /**
@@ -26,6 +26,8 @@ import java.net.InetSocketAddress;
  */
 public class Skeleton<T> {
   TCPServer tcpServer;
+  InetSocketAddress tcpServerAddress;
+  Thread listeningThread;
   T remoteObject;
   Class<T> clazz;
 
@@ -65,14 +67,14 @@ public class Skeleton<T> {
    * @throws NullPointerException If either of <code>c</code> or <code>server</code> is
    *         <code>null</code>.
    */
-  public Skeleton(Class<T> c, T server) {
+  public Skeleton(Class<T> c, T server) { // do not initialize TCPServer here
     if (c == null || server == null) {
       throw new NullPointerException();
     }
     if (!isRemoteInterface(c)) {
       throw new Error();
     }
-    tcpServer = new TCPServer();
+    tcpServerAddress = null;
     remoteObject = server;
     clazz = c;
   }
@@ -94,17 +96,14 @@ public class Skeleton<T> {
    * @throws NullPointerException If either of <code>c</code> or <code>server</code> is
    *         <code>null</code>.
    */
-  public Skeleton(Class<T> c, T server, InetSocketAddress address) {
+  public Skeleton(Class<T> c, T server, InetSocketAddress address) { // do not initialize TCPServer here
     if (c == null || server == null) {
       throw new NullPointerException();
     }
     if (!isRemoteInterface(c)) {
       throw new Error();
     }
-    if (address == null) {
-      tcpServer = new TCPServer();
-    }
-    tcpServer = new TCPServer(address);
+    tcpServerAddress = address;
     remoteObject = server;
     clazz = c;
   }
@@ -128,7 +127,6 @@ public class Skeleton<T> {
    *        stopped normally.
    */
   protected void stopped(Throwable cause) {
-
   }
 
   /**
@@ -172,7 +170,21 @@ public class Skeleton<T> {
    *         stopped.
    */
   public synchronized void start() throws RMIException {
-    throw new UnsupportedOperationException("not implemented");
+    try {
+      if (tcpServerAddress == null) {
+        tcpServer = new TCPServer();
+      } else {
+        tcpServer = new TCPServer(tcpServerAddress);
+      }
+      tcpServer.setSkeleton(this);
+      listeningThread = new Thread(tcpServer);
+      listeningThread.start();
+    } catch (IOException e) {
+      e.printStackTrace();
+      throw new RMIException("Listening socket could not be created or bound" +
+          " or listening thread could not be created, or the server has already been started" +
+          " and has not since stopped");
+    }
   }
 
   /**
@@ -185,6 +197,6 @@ public class Skeleton<T> {
    * restarted.
    */
   public synchronized void stop() {
-    throw new UnsupportedOperationException("not implemented");
+    tcpServer.stopServer();
   }
 }
