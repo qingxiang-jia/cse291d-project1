@@ -20,10 +20,6 @@ public class TCPServer implements Runnable {
 
   public TCPServer(int serverPort) {
     System.out.println("constructor called");
-    initServer(serverPort);
-  }
-
-  private void initServer(int serverPort) {
     threads = new HashSet<>();
     root = this;
     this.serverPort = serverPort;
@@ -34,22 +30,7 @@ public class TCPServer implements Runnable {
     }
   }
 
-  private void initServerSocket() {
-    try {
-      this.serverSocket = new ServerSocket(this.serverPort);
-      System.out.println("serverSocket opened successfully");
-    } catch (IOException e) {
-      System.out.println("Open serverSocket at port " + this.serverPort + " failed, exiting");
-      e.printStackTrace();
-      System.exit(-1);
-    }
-  }
-
-
   public void run() {
-    initServerSocket();
-    System.out.println(serverSocket);
-    System.out.println("server port: " + serverPort);
     while(!isStopped()) {
       Socket clientSocket = null;
       try {
