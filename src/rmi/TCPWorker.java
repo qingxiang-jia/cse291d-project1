@@ -1,24 +1,37 @@
 package rmi;
 
 import java.io.*;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.Socket;
-import java.sql.SQLOutput;
+import java.util.Set;
 
 /**
  * This is the actual server that handles each client. This runs in a separate thread.
  */
-public class TCPWorker implements Runnable {
+public class TCPWorker<T> implements Runnable {
+  TCPServer parent;
   Socket clientSocket;
+  T remoteObject;
+  Class<T> clazz;
+  Set<Method> methods;
   ObjectInputStream in;
   ObjectOutputStream out;
 
-  public TCPWorker(Socket clientSocket) {
+  public TCPWorker(Socket clientSocket, TCPServer parent) {
     this.clientSocket = clientSocket;
+    this.parent = parent;
   }
 
   public void run() {
     setupObjectStreams();
-    test();
+//    test();
+    remoteObject = (T) parent.skeleton.remoteObject;
+    clazz = parent.skeleton.clazz;
+    for (Method method : clazz.getMethods()) {
+      methods.add(method);
+    }
+    handleRemoteInvocation();
   }
 
   public void test() {
@@ -27,6 +40,33 @@ public class TCPWorker implements Runnable {
     String messageFromServer = "message from server";
     send(messageFromServer);
     stopWorker();
+  }
+
+  public void handleRemoteInvocation() {
+    Object obj = receive(); // blocking
+    RemoteCall remoteCall = null;
+    Object ret = null;
+    if (obj == null) {
+      send(new RMIException("Received null object"));
+    }
+    try {
+      remoteCall = (RemoteCall) obj;
+    } catch (ClassCastException e) {
+      send(new RMIException("Received object is not an instance of RemoteCall"));
+    }
+    if (!methods.contains(remoteCall.getMethod())) {
+      send(new RMIException("Received method is not valid"));
+    }
+    try {
+      Method methodOnRemoteObject = remoteObject.getClass().getMethod(remoteCall.getMethod().getName());
+      ret = methodOnRemoteObject.invoke(remoteObject, remoteCall.getArgs());
+    } catch (NoSuchMethodException e) {
+      System.out.println("This should never happen");
+      e.printStackTrace();
+    } catch (IllegalAccessException | InvocationTargetException e) {
+      send(new RMIException("Remote object failed to execute your remote call"));
+    }
+    send(new RemoteReturn(ret));
   }
 
   private void setupObjectStreams() {
@@ -45,7 +85,7 @@ public class TCPWorker implements Runnable {
     try {
       out.close();
       in.close();
-      TCPServer.root.deregisterThread(Thread.currentThread());
+      parent.deregisterThread(Thread.currentThread());
     } catch(IOException e) {
       System.out.println("Failed to close objectStreams, exiting");
       System.exit(-1);

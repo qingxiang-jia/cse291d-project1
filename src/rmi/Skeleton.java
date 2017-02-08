@@ -1,5 +1,7 @@
 package rmi;
 
+import java.io.IOException;
+import java.lang.reflect.Method;
 import java.net.InetSocketAddress;
 
 /**
@@ -23,6 +25,30 @@ import java.net.InetSocketAddress;
  * overriding <code>listen_error</code> or <code>service_error</code>.
  */
 public class Skeleton<T> {
+  TCPServer tcpServer;
+  InetSocketAddress tcpServerAddress;
+  Thread listeningThread;
+  T remoteObject;
+  Class<T> clazz;
+
+  private boolean isRemoteInterface(Class<T> c) { // rmi.RMIException
+    if (c.getMethods().length == 0) {
+      return false; // if no methods at all, false
+    }
+    for (Method method : c.getMethods()) {
+      boolean hasRMIException = false;
+      for (Class exceptionClass : method.getExceptionTypes()) {
+        if (exceptionClass.getName().equals("rmi.RMIException")) {
+          hasRMIException = true;
+        }
+      }
+      if (!hasRMIException) {
+        return false;
+      }
+    }
+    return true;
+  }
+
   /**
    * Creates a <code>Skeleton</code> with no initial server address. The address will be determined
    * by the system when <code>start</code> is called. Equivalent to using
@@ -41,8 +67,16 @@ public class Skeleton<T> {
    * @throws NullPointerException If either of <code>c</code> or <code>server</code> is
    *         <code>null</code>.
    */
-  public Skeleton(Class<T> c, T server) {
-    throw new UnsupportedOperationException("not implemented");
+  public Skeleton(Class<T> c, T server) { // do not initialize TCPServer here
+    if (c == null || server == null) {
+      throw new NullPointerException();
+    }
+    if (!isRemoteInterface(c)) {
+      throw new Error();
+    }
+    tcpServerAddress = null;
+    remoteObject = server;
+    clazz = c;
   }
 
   /**
@@ -62,8 +96,16 @@ public class Skeleton<T> {
    * @throws NullPointerException If either of <code>c</code> or <code>server</code> is
    *         <code>null</code>.
    */
-  public Skeleton(Class<T> c, T server, InetSocketAddress address) {
-    throw new UnsupportedOperationException("not implemented");
+  public Skeleton(Class<T> c, T server, InetSocketAddress address) { // do not initialize TCPServer here
+    if (c == null || server == null) {
+      throw new NullPointerException();
+    }
+    if (!isRemoteInterface(c)) {
+      throw new Error();
+    }
+    tcpServerAddress = address;
+    remoteObject = server;
+    clazz = c;
   }
 
   /**
@@ -84,7 +126,8 @@ public class Skeleton<T> {
    * @param cause The exception that stopped the skeleton, or <code>null</code> if the skeleton
    *        stopped normally.
    */
-  protected void stopped(Throwable cause) {}
+  protected void stopped(Throwable cause) {
+  }
 
   /**
    * Called when an exception occurs at the top level in the listening thread.
@@ -127,7 +170,21 @@ public class Skeleton<T> {
    *         stopped.
    */
   public synchronized void start() throws RMIException {
-    throw new UnsupportedOperationException("not implemented");
+    try {
+      if (tcpServerAddress == null) {
+        tcpServer = new TCPServer();
+      } else {
+        tcpServer = new TCPServer(tcpServerAddress);
+      }
+      tcpServer.setSkeleton(this);
+      listeningThread = new Thread(tcpServer);
+      listeningThread.start();
+    } catch (IOException e) {
+      e.printStackTrace();
+      throw new RMIException("Listening socket could not be created or bound" +
+          " or listening thread could not be created, or the server has already been started" +
+          " and has not since stopped");
+    }
   }
 
   /**
@@ -140,6 +197,6 @@ public class Skeleton<T> {
    * restarted.
    */
   public synchronized void stop() {
-    throw new UnsupportedOperationException("not implemented");
+    tcpServer.stopServer();
   }
 }

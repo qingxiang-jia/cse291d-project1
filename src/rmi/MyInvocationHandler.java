@@ -47,16 +47,16 @@ public class MyInvocationHandler implements InvocationHandler {
     }
 
     Socket s = new Socket();
-    MessageReturned mesRet = null;
+    RemoteReturn mesRet = null;
     try {
       s.connect(skeletonAddress);
-      MessageToTransmit msgTran = new MessageToTransmit(method, args);
+      RemoteCall msgTran = new RemoteCall(method, args);
       ObjectOutputStream out = new ObjectOutputStream(s.getOutputStream());
       out.writeObject(msgTran);
       out.flush();
 
       ObjectInputStream in = new ObjectInputStream(s.getInputStream());
-      mesRet = (MessageReturned) in.readObject();
+      mesRet = (RemoteReturn) in.readObject();
 
       in.close();
       out.close();
