@@ -1,10 +1,9 @@
 package rmi;
 
 import java.io.IOException;
-import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -15,37 +14,29 @@ import java.util.Set;
 public class TCPServer implements Runnable {
   int serverPort;
   Set<Thread> threads;
-  InetAddress serverAddress;
   ServerSocket serverSocket;
   static TCPServer root;
   boolean stopped = false;
 
   public TCPServer(int serverPort) {
-    initServer(serverPort);
-  }
-
-  private void initServer(int serverPort) {
+    System.out.println("constructor called");
     threads = new HashSet<>();
     root = this;
-  }
-
-  public TCPServer(String serverIP, int serverPort) {
+    this.serverPort = serverPort;
     try {
-      this.serverAddress = InetAddress.getByName(serverIP);
-    } catch (UnknownHostException e) {
-      System.out.println("Unknown host, server exiting");
-      System.exit(-1);
+      serverSocket = new ServerSocket(this.serverPort);
+    } catch (IOException ioe) {
+      ioe.printStackTrace();
     }
-    initServer(serverPort);
   }
 
   public void run() {
-    // open serverSocket that listens to incoming connections
-    initServerSocket();
     while(!isStopped()) {
       Socket clientSocket = null;
       try {
+        System.out.println("about to accept client connection");
         clientSocket = this.serverSocket.accept();
+        System.out.println("accepted client connection");
       } catch (IOException e) {
         if (isStopped()) {
           System.out.println("Server has stopped");
@@ -73,15 +64,6 @@ public class TCPServer implements Runnable {
     } catch (IOException e) {
       System.out.println("Failed to stop serverSocket");
       e.printStackTrace();
-    }
-  }
-
-  private void initServerSocket() {
-    try {
-      this.serverSocket = new ServerSocket(this.serverPort);
-    } catch (IOException e) {
-      System.out.println("Open serverSocket at port " + this.serverSocket + " failed, exiting");
-      System.exit(-1);
     }
   }
 
