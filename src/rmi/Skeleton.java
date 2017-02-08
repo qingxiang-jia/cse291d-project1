@@ -197,11 +197,15 @@ public class Skeleton<T> {
    * restarted.
    */
   public synchronized void stop() {
-    System.out.println("tcpServer == null? " + (tcpServer == null));
-    tcpServer.stopServer();
+    if (tcpServer != null) {
+      tcpServer.stopServer();
+    }
   }
 
   public InetSocketAddress getSkeletonAddress() {
-    return tcpServerAddress;
+    if (tcpServer != null) {
+      return tcpServer.serverAddress;
+    }
+    return null;
   }
 }
