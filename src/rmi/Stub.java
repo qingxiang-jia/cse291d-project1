@@ -46,8 +46,16 @@ public abstract class Stub {
    *         implementing this interface cannot be dynamically created.
    */
   public static <T> T create(Class<T> c, Skeleton<T> skeleton) throws UnknownHostException {
-    
-    throw new UnsupportedOperationException("not implemented");
+    if(c == null || skeleton == null)
+      throw new NullPointerException("have null arguments");
+    InetSocketAddress addr = skeleton.getSkeletonAddress();
+    if(addr == null)
+      throw new IllegalStateException("the skeleton has not been assigned an address");
+    if(addr.getHostName().equals("0.0.0.0"))
+      throw new UnknownHostException("UnknownHostException");
+    if(!isRemoteInterface(c))
+      throw new Error(c.getCanonicalName() + " is not a remote interface");
+    return createProxy(c, new MyInvocationHandler(c, addr));      
   }
 
   /**
@@ -77,8 +85,15 @@ public abstract class Stub {
    *         implementing this interface cannot be dynamically created.
    */
   public static <T> T create(Class<T> c, Skeleton<T> skeleton, String hostname) {
-    
-    throw new UnsupportedOperationException("not implemented");
+    if(c == null || skeleton == null || hostname == null)
+      throw new NullPointerException("have null arguments");
+    InetSocketAddress addr = skeleton.getSkeletonAddress();
+    if(addr == null)
+      throw new IllegalStateException("the skeleton has not been assigned a port");
+    if(!isRemoteInterface(c))
+      throw new Error(c.getCanonicalName() + " is not a remote interface");
+    addr = new InetSocketAddress(hostname, addr.getPort());
+    return createProxy(c, new MyInvocationHandler(c, addr));
   }
 
   /**
@@ -99,11 +114,10 @@ public abstract class Stub {
    *         implementing this interface cannot be dynamically created.
    */
   public static <T> T create(Class<T> c, InetSocketAddress address) {
+    if(c == null || address == null)
+      throw new NullPointerException("have null arguments");
     if (!isRemoteInterface(c)) {
-      NonRemoteInterfaceException e =
-          new NonRemoteInterfaceException(c.getName() + " is not a remote interface");
-      System.out.println(e.getMessage());
-      return null;
+      throw new Error(c.getCanonicalName() + " is not a remote interface");
     }
     return createProxy(c, new MyInvocationHandler(c, address));
   }
@@ -118,7 +132,7 @@ public abstract class Stub {
     return true;
   }
 
-  private static <T> T createProxy(Class c, MyInvocationHandler handler) {
+  private static <T> T createProxy(Class<T> c, MyInvocationHandler handler) {
     return (T) Proxy.newProxyInstance(MyInvocationHandler.class.getClassLoader(),
         new Class[] {c.getClass()}, handler);
   }
