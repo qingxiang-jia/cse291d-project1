@@ -64,11 +64,8 @@ public class SkeletonTest extends Test {
   @Override
   protected void perform() throws TestFailed {
     ensureClassRejected();
-    System.out.println("ensureClassRejected ran");
     ensureNonRemoteInterfaceRejected();
-    System.out.println("ensureNonRemoteInterfaceRejected ran");
     ensureNullPointerExceptions();
-    System.out.println("ensureNullPointerExceptions ran");
     ensureSkeletonRuns();
     System.out.println("ensureSkeletonRuns ran");
   }
@@ -81,9 +78,8 @@ public class SkeletonTest extends Test {
    * is accepting connections.
    */
   private void ensureSkeletonRuns() throws TestFailed {
-    if (probe())
+    if (probe()) // stuck here
       throw new TestFailed("skeleton accepts connections before start");
-
     try {
       skeleton.start();
     } catch (RMIException e) {
@@ -124,7 +120,7 @@ public class SkeletonTest extends Test {
    */
   private boolean probe() {
     Socket socket = new Socket();
-
+    System.out.println("address: " + address);
     try {
       socket.connect(address);
     } catch (Exception e) {
