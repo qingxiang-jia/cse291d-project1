@@ -2,7 +2,6 @@ package rmi;
 
 import java.io.*;
 import java.net.Socket;
-import java.sql.SQLOutput;
 
 /**
  * This is the actual server that handles each client. This runs in a separate thread.

@@ -1,5 +1,7 @@
 package rmi;
 
+import java.lang.reflect.Method;
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
 
 /**
@@ -23,6 +25,28 @@ import java.net.InetSocketAddress;
  * overriding <code>listen_error</code> or <code>service_error</code>.
  */
 public class Skeleton<T> {
+  TCPServer tcpServer;
+  T remoteObject;
+  Class<T> clazz;
+
+  private boolean isRemoteInterface(Class<T> c) { // rmi.RMIException
+    if (c.getMethods().length == 0) {
+      return false; // if no methods at all, false
+    }
+    for (Method method : c.getMethods()) {
+      boolean hasRMIException = false;
+      for (Class exceptionClass : method.getExceptionTypes()) {
+        if (exceptionClass.getName().equals("rmi.RMIException")) {
+          hasRMIException = true;
+        }
+      }
+      if (!hasRMIException) {
+        return false;
+      }
+    }
+    return true;
+  }
+
   /**
    * Creates a <code>Skeleton</code> with no initial server address. The address will be determined
    * by the system when <code>start</code> is called. Equivalent to using
@@ -42,7 +66,15 @@ public class Skeleton<T> {
    *         <code>null</code>.
    */
   public Skeleton(Class<T> c, T server) {
-    throw new UnsupportedOperationException("not implemented");
+    if (c == null || server == null) {
+      throw new NullPointerException();
+    }
+    if (!isRemoteInterface(c)) {
+      throw new Error();
+    }
+    tcpServer = new TCPServer();
+    remoteObject = server;
+    clazz = c;
   }
 
   /**
@@ -63,7 +95,18 @@ public class Skeleton<T> {
    *         <code>null</code>.
    */
   public Skeleton(Class<T> c, T server, InetSocketAddress address) {
-    throw new UnsupportedOperationException("not implemented");
+    if (c == null || server == null) {
+      throw new NullPointerException();
+    }
+    if (!isRemoteInterface(c)) {
+      throw new Error();
+    }
+    if (address == null) {
+      tcpServer = new TCPServer();
+    }
+    tcpServer = new TCPServer(address);
+    remoteObject = server;
+    clazz = c;
   }
 
   /**
@@ -84,7 +127,9 @@ public class Skeleton<T> {
    * @param cause The exception that stopped the skeleton, or <code>null</code> if the skeleton
    *        stopped normally.
    */
-  protected void stopped(Throwable cause) {}
+  protected void stopped(Throwable cause) {
+
+  }
 
   /**
    * Called when an exception occurs at the top level in the listening thread.

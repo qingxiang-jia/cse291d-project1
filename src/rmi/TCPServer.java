@@ -1,6 +1,8 @@
 package rmi;
 
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashSet;
@@ -11,22 +13,42 @@ import java.util.Set;
  * http://tutorials.jenkov.com/java-multithreaded-servers/multithreaded-server.html
  */
 public class TCPServer implements Runnable {
-  int serverPort;
+  static final int DEFAULT_BACKLOG = 50;
   Set<Thread> threads;
   ServerSocket serverSocket;
   static TCPServer root;
   boolean stopped = false;
 
-  public TCPServer(int serverPort) {
-    System.out.println("constructor called");
+  public TCPServer() {
+    try {
+      serverSocket = new ServerSocket(); // random port, random IP
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    init();
+  }
+
+  public TCPServer(int port) {
+    try {
+      serverSocket = new ServerSocket(port); // random IP
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    init();
+  }
+
+  public TCPServer(InetSocketAddress ipPort) {
+    try {
+      serverSocket = new ServerSocket(ipPort.getPort(), DEFAULT_BACKLOG, ipPort.getAddress());
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    init();
+  }
+
+  private void init() {
     threads = new HashSet<>();
     root = this;
-    this.serverPort = serverPort;
-    try {
-      serverSocket = new ServerSocket(this.serverPort);
-    } catch (IOException ioe) {
-      ioe.printStackTrace();
-    }
   }
 
   public void run() {
