@@ -46,6 +46,7 @@ public abstract class Stub {
    *         implementing this interface cannot be dynamically created.
    */
   public static <T> T create(Class<T> c, Skeleton<T> skeleton) throws UnknownHostException {
+    
     throw new UnsupportedOperationException("not implemented");
   }
 
@@ -76,6 +77,7 @@ public abstract class Stub {
    *         implementing this interface cannot be dynamically created.
    */
   public static <T> T create(Class<T> c, Skeleton<T> skeleton, String hostname) {
+    
     throw new UnsupportedOperationException("not implemented");
   }
 
