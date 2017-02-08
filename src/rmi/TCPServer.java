@@ -1,7 +1,6 @@
 package rmi;
 
 import java.io.IOException;
-import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -12,12 +11,12 @@ import java.util.Set;
  * A multi-thread TCP server the skeleton will use. ref
  * http://tutorials.jenkov.com/java-multithreaded-servers/multithreaded-server.html
  */
-public class TCPServer implements Runnable {
+public class TCPServer<T> implements Runnable {
   static final int DEFAULT_BACKLOG = 50;
   Set<Thread> threads;
   ServerSocket serverSocket;
-  static TCPServer root;
   boolean stopped = false;
+  Skeleton<T> skeleton;
 
   public TCPServer() {
     try {
@@ -48,7 +47,6 @@ public class TCPServer implements Runnable {
 
   private void init() {
     threads = new HashSet<>();
-    root = this;
   }
 
   public void run() {
@@ -67,7 +65,7 @@ public class TCPServer implements Runnable {
           e.printStackTrace();
         }
       }
-      Thread workerThread = new Thread(new TCPWorker(clientSocket));
+      Thread workerThread = new Thread(new TCPWorker(clientSocket, this));
       registerThread(workerThread);
       workerThread.start();
     }
