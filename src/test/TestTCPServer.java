@@ -3,9 +3,7 @@ package test;
 import rmi.TCPClient;
 import rmi.TCPServer;
 
-import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.net.Socket;
 
 /**
  * A quick test to test if TCPServer and associated classes are implemented correctly.
@@ -31,15 +29,8 @@ public class TestTCPServer {
   }
 
   public static void main(String...args) {
-//    TestTCPServer testTCPServer = new TestTCPServer();
-//    testTCPServer.runTest();
-    InetSocketAddress address = new InetSocketAddress(7070);
-    Socket socket = new Socket();
-    try {
-      socket.connect(address);
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-
+    TestTCPServer testTCPServer = new TestTCPServer();
+    testTCPServer.runTest();
+    InetSocketAddress address = new InetSocketAddress(1321);
   }
 }
