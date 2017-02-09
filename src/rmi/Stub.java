@@ -51,7 +51,6 @@ public abstract class Stub {
     InetSocketAddress addr = skeleton.getSkeletonAddress();
     if(addr == null)
       throw new IllegalStateException("the skeleton has not been assigned an address");
-    System.out.println("hostname: " + addr.getHostName());
 //    if(addr.equals("0.0.0.0"))
 //      throw new UnknownHostException("UnknownHostException");
     if(!isRemoteInterface(c))
