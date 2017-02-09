@@ -25,13 +25,8 @@ public class MyInvocationHandler implements InvocationHandler {
   public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
     String methodName = method.getName();
     InvocationHandler handler = null;
-//    System.out.println("method##############################################" + (method == null));
-//    System.out.println("args##############################################" + (args == null));
-//    System.out.println("args[0]##############################################" + (args[0] == null));
-//    System.out.println("methodname##############################################" + (methodName == null));
     
     if (methodName.equals("equals") && args != null && args.length == 1) {
-//        && (args[0] == null || args[0].getClass().equals(Object.class))) {
       if (args[0] == null || proxy == null || !Proxy.isProxyClass(args[0].getClass())
           || !((handler = Proxy.getInvocationHandler(args[0])) instanceof MyInvocationHandler)
           || !((MyInvocationHandler) handler).getStubClass().equals(this.stubClass)

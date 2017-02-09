@@ -19,4 +19,9 @@ public class RemoteCall implements Serializable {
   public Object[] getArgs() {
     return args;
   }
+  
+  public static void main(String[] args) {
+    boolean flag = true;
+    Method me = null;
+  }
 }
