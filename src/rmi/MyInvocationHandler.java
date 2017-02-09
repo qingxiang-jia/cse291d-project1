@@ -14,7 +14,7 @@ import java.util.HashSet;
 public class MyInvocationHandler implements InvocationHandler {
   private Class stubClass;
   private InetSocketAddress skeletonAddress;
-
+  
   public MyInvocationHandler(Class c, InetSocketAddress address) {
     stubClass = c;
     skeletonAddress = address;
