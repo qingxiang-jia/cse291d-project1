@@ -89,6 +89,7 @@ public class StubTest extends Test {
     ensureUnknownHostRejected();
 
     try {
+
       skeleton.start();
     } catch (Throwable t) {
       throw new TestFailed("unable to start dummy skeleton", t);

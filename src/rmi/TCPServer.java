@@ -22,7 +22,7 @@ public class TCPServer<T> implements Runnable {
   int state = STOPPED;
 
   public TCPServer() throws IOException {
-    serverSocket = new ServerSocket(); // random port, random IP
+    serverSocket = new ServerSocket(0); // random port, random IP
     init();
   }
 
