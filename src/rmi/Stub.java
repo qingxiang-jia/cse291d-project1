@@ -51,9 +51,9 @@ public abstract class Stub {
     InetSocketAddress addr = skeleton.getSkeletonAddress();
     if(addr == null)
       throw new IllegalStateException("the skeleton has not been assigned an address");
-    System.out.println(addr.getHostName());
-    if(addr.getHostName().equals("0.0.0.0"))
-      throw new UnknownHostException("UnknownHostException");
+    System.out.println("hostname: " + addr.getHostName());
+//    if(addr.equals("0.0.0.0"))
+//      throw new UnknownHostException("UnknownHostException");
     if(!isRemoteInterface(c))
       throw new Error(c.getCanonicalName() + " is not a remote interface");
     return createProxy(c, new MyInvocationHandler(c, addr));      
@@ -134,7 +134,7 @@ public abstract class Stub {
   }
 
   private static <T> T createProxy(Class<T> c, MyInvocationHandler handler) {
-    return (T) Proxy.newProxyInstance(MyInvocationHandler.class.getClassLoader(),
-        new Class[] {c.getClass()}, handler);
+    return (T) Proxy.newProxyInstance(c.getClassLoader(),
+        new Class[] {c}, handler);
   }
 }

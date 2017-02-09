@@ -24,6 +24,7 @@ public class MyInvocationHandler implements InvocationHandler {
   public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
     String methodName = method.getName();
     InvocationHandler handler = null;
+    System.out.println("args################################################ ? " + args == null);
     if (methodName.equals("equals") && args.length == 1
         && args[0].getClass().equals(Object.class)) {
       if (proxy == null || !Proxy.isProxyClass(args[0].getClass())
