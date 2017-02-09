@@ -4,6 +4,7 @@ import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.Socket;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -21,6 +22,7 @@ public class TCPWorker<T> implements Runnable {
   public TCPWorker(Socket clientSocket, TCPServer parent) {
     this.clientSocket = clientSocket;
     this.parent = parent;
+    methods = new HashSet<>();
   }
 
   public void run() {
