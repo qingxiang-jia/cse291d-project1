@@ -22,7 +22,7 @@ public class TCPServer<T> implements Runnable {
   int state = STOPPED;
 
   public TCPServer() throws IOException {
-    serverSocket = new ServerSocket(); // random port, random IP
+    serverSocket = new ServerSocket(0); // random port, random IP
     init();
   }
 
@@ -50,9 +50,7 @@ public class TCPServer<T> implements Runnable {
     while(!isStopped()) {
       Socket clientSocket = null;
       try {
-        System.out.println("about to accept client connection");
         clientSocket = this.serverSocket.accept();
-        System.out.println("accepted client connection");
       } catch (IOException e) {
         if (isStopped()) {
           System.out.println("Server has stopped");

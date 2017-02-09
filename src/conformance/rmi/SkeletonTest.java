@@ -67,13 +67,9 @@ public class SkeletonTest extends Test {
   @Override
   protected void perform() throws TestFailed {
     ensureClassRejected();
-    System.out.println("ensureClassRejected");
     ensureNonRemoteInterfaceRejected();
-    System.out.println("ensureNonRemoteInterfaceRejected");
     ensureNullPointerExceptions();
-    System.out.println("ensureNullPointerExceptions");
     ensureSkeletonRuns();
-    System.out.println("ensureSkeletonRuns");
   }
 
   /**
