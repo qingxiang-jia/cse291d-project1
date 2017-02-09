@@ -170,7 +170,6 @@ public class Skeleton<T> {
    *         stopped.
    */
   public synchronized void start() throws RMIException {
-    System.out.println("Start called");
     try {
       if (tcpServerAddress == null) {
         tcpServer = new TCPServer();

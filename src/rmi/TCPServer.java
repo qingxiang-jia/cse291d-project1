@@ -50,9 +50,7 @@ public class TCPServer<T> implements Runnable {
     while(!isStopped()) {
       Socket clientSocket = null;
       try {
-        System.out.println("about to accept client connection");
         clientSocket = this.serverSocket.accept();
-        System.out.println("accepted client connection");
       } catch (IOException e) {
         if (isStopped()) {
           System.out.println("Server has stopped");
