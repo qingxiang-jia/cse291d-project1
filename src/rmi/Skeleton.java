@@ -201,6 +201,7 @@ public class Skeleton<T> {
     if (tcpServer != null) {
       tcpServer.stopServer();
     }
+    stopped(null);
   }
 
   public InetSocketAddress getSkeletonAddress() {

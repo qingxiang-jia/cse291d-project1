@@ -83,8 +83,12 @@ public class TCPWorker<T> implements Runnable {
 
   public void stopWorker() {
     try {
-      out.close();
-      in.close();
+      if (out != null) {
+        out.close();
+      }
+      if (in != null) {
+        in.close();
+      }
       parent.deregisterThread(Thread.currentThread());
     } catch(IOException e) {
       System.out.println("Failed to close objectStreams, exiting");
