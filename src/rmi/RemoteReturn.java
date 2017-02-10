@@ -1,13 +1,18 @@
 package rmi;
 
-public class RemoteReturn {
-  private Object returnValue;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+public class RemoteReturn implements Serializable{
+  private List<Object> returnValue;
 
   RemoteReturn(Object returnValue) {
-    this.returnValue = returnValue;
+    this.returnValue = new ArrayList<>();
+    this.returnValue.add(returnValue);
   }
 
   public Object getReturnValue() {
-    return returnValue;
+    return returnValue.get(0);
   }
 }
