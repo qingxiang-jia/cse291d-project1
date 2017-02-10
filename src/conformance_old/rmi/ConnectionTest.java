@@ -1,4 +1,4 @@
-package conformance.rmi;
+package conformance_old.rmi;
 
 import rmi.RMIException;
 import rmi.Skeleton;

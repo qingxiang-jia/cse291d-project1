@@ -1,4 +1,4 @@
-package conformance.rmi;
+package conformance_old.rmi;
 
 /**
  * Non-remote interface that RMI constructors should reject.
