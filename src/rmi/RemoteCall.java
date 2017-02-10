@@ -14,7 +14,11 @@ public class RemoteCall implements Serializable {
   public RemoteCall(Method method, Object[] args) {
     methodName = method.getName();
     paraTypes = new ArrayList<Class>(Arrays.asList(method.getParameterTypes()));
-    this.args = new ArrayList<>(Arrays.asList(args));
+    if (args == null) {
+      this.args = new ArrayList<>(0);
+    } else {
+      this.args = new ArrayList<>(Arrays.asList(args));
+    }
   }
   
   public String getMethodName(){

@@ -60,15 +60,22 @@ public class TCPWorker<T> implements Runnable {
       send(new RMIException("Received method is not valid"));
     }
     if (remoteCall.getParaTypes() == null) {
-      send(new RMIException("Parameter list is empty"));
+      send(new RMIException("Parameter list is null"));
     }
-    Class[] parameterTypeArray = null;
+    if (remoteCall.getArgs() == null) {
+      send(new RMIException("Argument list is null"));
+    }
+    if (remoteCall.getParaTypes().size() != remoteCall.getArgs().size()) {
+      send(new RMIException("Method parameter quantity does not match actual argument quantity"));
+    }
+    Class[] parameterTypeArray = new Class[remoteCall.getParaTypes().size()];
     for (int i = 0; i < remoteCall.getParaTypes().size(); i++) {
       parameterTypeArray[i] = remoteCall.getParaTypes().get(i);
     }
     try {
       Method methodOnRemoteObject = remoteObject.getClass().getMethod(remoteCall.getMethodName(), parameterTypeArray);
-      ret = methodOnRemoteObject.invoke(remoteObject, remoteCall.getArgs());
+      Object[] args = new Object[remoteCall.getArgs().size()];
+      ret = methodOnRemoteObject.invoke(remoteObject, args);
     } catch (NoSuchMethodException e) {
       System.out.println("This should never happen");
       e.printStackTrace();
