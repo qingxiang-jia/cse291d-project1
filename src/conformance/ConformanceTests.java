@@ -24,7 +24,8 @@ public class ConformanceTests
         // Create the test list, the series object, and run the test series.
         @SuppressWarnings("unchecked")
         Class<? extends Test>[]     tests =
-            new Class[] {conformance.rmi.CallTest.class, // passed
+            new Class[] {
+                         conformance.rmi.CallTest.class, // passed
                          conformance.rmi.ArgumentTest.class, // passed
                          conformance.rmi.ReturnTest.class, // passed
                          conformance.rmi.ExceptionTest.class, // passed
@@ -33,20 +34,21 @@ public class ConformanceTests
                          conformance.rmi.NullTest.class, // passed
                          conformance.rmi.RemoteInterfaceTest.class, // passed
                          conformance.rmi.ListenTest.class, // passed
-                         //conformance.rmi.RestartTest.class, // <- stuck
+                         conformance.rmi.RestartTest.class, // passed
                          conformance.rmi.NoAddressTest.class, // passed
-                         conformance.rmi.ServiceErrorTest.class/*, // <- stuck
-                         conformance.rmi.StubTest.class,
-                         conformance.rmi.EqualsTest.class,
-                         conformance.rmi.HashCodeTest.class,
-                         conformance.rmi.ToStringTest.class,
-                         conformance.rmi.SerializableTest.class,
-                         conformance.rmi.OverloadTest.class,
-                         conformance.rmi.ShadowTest.class,
-                         conformance.rmi.InheritanceTest.class,
-                         conformance.rmi.SubclassTest.class,
-                         conformance.rmi.SecurityTest.class,
-                         conformance.rmi.ThreadTest.class*/};
+                         conformance.rmi.ServiceErrorTest.class, // passed
+                         conformance.rmi.StubTest.class 
+//                         conformance.rmi.EqualsTest.class,
+//                         conformance.rmi.HashCodeTest.class,
+//                         conformance.rmi.ToStringTest.class,
+//                         conformance.rmi.SerializableTest.class,
+//                         conformance.rmi.OverloadTest.class,
+//                         conformance.rmi.ShadowTest.class,
+//                         conformance.rmi.InheritanceTest.class,
+//                         conformance.rmi.SubclassTest.class,
+//                         conformance.rmi.SecurityTest.class,
+//                         conformance.rmi.ThreadTest.class
+            };
 
         Series                      series = new Series(tests);
         SeriesReport                report = series.run(3, System.out);
