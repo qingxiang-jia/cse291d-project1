@@ -34,14 +34,14 @@ public class ConformanceTests
                          conformance.rmi.NullTest.class, // passed
                          conformance.rmi.RemoteInterfaceTest.class, // passed
                          conformance.rmi.ListenTest.class, // passed
-                         conformance.rmi.RestartTest.class, // passed
+                         conformance.rmi.RestartTest.class, // sometimes doesn't pass
                          conformance.rmi.NoAddressTest.class, // passed
                          conformance.rmi.ServiceErrorTest.class, // passed
-                         conformance.rmi.StubTest.class, // passed
-                         conformance.rmi.EqualsTest.class
-//                         conformance.rmi.HashCodeTest.class,
-//                         conformance.rmi.ToStringTest.class,
-//                         conformance.rmi.SerializableTest.class,
+                         conformance.rmi.StubTest.class, // sometimes doesn't pass
+                         conformance.rmi.EqualsTest.class, // passed
+                         conformance.rmi.HashCodeTest.class, // passed
+                         conformance.rmi.ToStringTest.class, // passed
+                         conformance.rmi.SerializableTest.class // passed
 //                         conformance.rmi.OverloadTest.class,
 //                         conformance.rmi.ShadowTest.class,
 //                         conformance.rmi.InheritanceTest.class,

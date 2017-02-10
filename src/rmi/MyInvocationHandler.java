@@ -3,6 +3,7 @@ package rmi;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -11,7 +12,7 @@ import java.net.Socket;
 import java.util.Arrays;
 import java.util.HashSet;
 
-public class MyInvocationHandler implements InvocationHandler {
+public class MyInvocationHandler implements InvocationHandler, Serializable {
   private Class stubClass;
   private InetSocketAddress skeletonAddress;
   
