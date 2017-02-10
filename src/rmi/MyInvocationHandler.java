@@ -62,13 +62,20 @@ public class MyInvocationHandler implements InvocationHandler {
       
       ObjectInputStream in = new ObjectInputStream(s.getInputStream());
       mesRet = (RemoteReturn) in.readObject();
-
       in.close();
       out.close();
       s.close();
     } catch (IOException e) {
       System.out.println(e.getMessage());
     }
+    
+    if(mesRet.getHasException()){
+      Object obj = mesRet.getException();
+      String theType = mesRet.getExceptionType().getName();
+      Class<?> theClass = Class.forName(theType);
+      throw (Throwable) theClass.cast(obj);
+    }
+    
     return mesRet != null ? mesRet.getReturnValue() : null;
   }
 
