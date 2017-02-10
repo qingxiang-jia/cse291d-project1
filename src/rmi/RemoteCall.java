@@ -8,8 +8,8 @@ import java.util.List;
 
 public class RemoteCall implements Serializable {
   private String methodName;
-  private List<Class> paraTypes;
-  private List<Object> args;
+  private ArrayList<Class> paraTypes;
+  private ArrayList<Object> args;
 
   public RemoteCall(Method method, Object[] args) {
     methodName = method.getName();
@@ -25,11 +25,11 @@ public class RemoteCall implements Serializable {
     return methodName;
   }
   
-  public List<Class> getParaTypes(){
+  public ArrayList<Class> getParaTypes(){
     return paraTypes;
   }
 
-  public List<Object> getArgs() {
+  public ArrayList<Object> getArgs() {
     return args;
   }
   
