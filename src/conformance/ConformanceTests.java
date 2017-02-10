@@ -41,8 +41,8 @@ public class ConformanceTests
                          conformance.rmi.EqualsTest.class, // passed
                          conformance.rmi.HashCodeTest.class, // passed
                          conformance.rmi.ToStringTest.class, // passed
-                         conformance.rmi.SerializableTest.class // passed
-//                         conformance.rmi.OverloadTest.class,
+                         conformance.rmi.SerializableTest.class, // passed
+                         conformance.rmi.OverloadTest.class
 //                         conformance.rmi.ShadowTest.class,
 //                         conformance.rmi.InheritanceTest.class,
 //                         conformance.rmi.SubclassTest.class,
