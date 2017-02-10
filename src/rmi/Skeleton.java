@@ -174,13 +174,13 @@ public class Skeleton<T> {
   public synchronized void start() throws RMIException {
     try {
       if (tcpServerAddress == null) {
-        tcpServer = new TCPServer();
+        tcpServer = new TCPServer(this);
       } else {
-        tcpServer = new TCPServer(tcpServerAddress);
+        tcpServer = new TCPServer(tcpServerAddress, this);
       }
-        tcpServer.setSkeleton(this);
-        listeningThread = new Thread(tcpServer);
-        listeningThread.start();
+      tcpServer.setSkeleton(this);
+      listeningThread = new Thread(tcpServer);
+      listeningThread.start();
     } catch (IOException e) {
       e.printStackTrace();
       throw new RMIException("Listening socket could not be created or bound" +
@@ -207,10 +207,6 @@ public class Skeleton<T> {
   }
 
   public InetSocketAddress getSkeletonAddress() {
-    if (tcpServer != null) {
-      return tcpServer.serverAddress;
-    } else {
-      return tcpServerAddress;
-    }
+    return tcpServerAddress;
   }
 }

@@ -27,7 +27,7 @@ public class TCPWorker<T> implements Runnable {
 
   public void run() {
     setupObjectStreams();
-//    test();
+    /* for test test(); */
     remoteObject = (T) parent.skeleton.remoteObject;
     clazz = parent.skeleton.clazz;
     for (Method method : clazz.getMethods()) {
@@ -107,15 +107,12 @@ public class TCPWorker<T> implements Runnable {
     try {
       out = new ObjectOutputStream(clientSocket.getOutputStream());
       out.flush();
-      Thread.sleep(10);
-//      while (clientSocket.getInputStream().available() <= 0); //todo
+      Thread.sleep(10); // very expensively learned trick
       in = new ObjectInputStream(clientSocket.getInputStream());
     } catch (IOException e) {
-      parent.skeleton.service_error(new RMIException("XXX"));
+      parent.skeleton.service_error(new RMIException("calling_service_error"));
       System.out.println("Failed to setup objectStreams, exiting");
       e.printStackTrace();
-//      stopWorker();
-//      System.exit(-1);
     } catch (InterruptedException e) {
       e.printStackTrace();
     }
@@ -129,7 +126,6 @@ public class TCPWorker<T> implements Runnable {
       if (in != null) {
         in.close();
       }
-      parent.deregisterThread(Thread.currentThread());
     } catch(IOException e) {
       System.out.println("Failed to close objectStreams, exiting");
       System.exit(-1);
