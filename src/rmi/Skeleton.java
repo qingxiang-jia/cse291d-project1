@@ -206,7 +206,8 @@ public class Skeleton<T> {
   public InetSocketAddress getSkeletonAddress() {
     if (tcpServer != null) {
       return tcpServer.serverAddress;
+    } else {
+      return tcpServerAddress;
     }
-    return null;
   }
 }
