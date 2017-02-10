@@ -15,14 +15,14 @@ public class TCPWorker<T> implements Runnable {
   Socket clientSocket;
   T remoteObject;
   Class<T> clazz;
-  Set<Method> methods;
+  Set<String> validMethodNames;
   ObjectInputStream in;
   ObjectOutputStream out;
 
   public TCPWorker(Socket clientSocket, TCPServer parent) {
     this.clientSocket = clientSocket;
     this.parent = parent;
-    methods = new HashSet<>();
+    validMethodNames = new HashSet<>();
   }
 
   public void run() {
@@ -31,7 +31,7 @@ public class TCPWorker<T> implements Runnable {
     remoteObject = (T) parent.skeleton.remoteObject;
     clazz = parent.skeleton.clazz;
     for (Method method : clazz.getMethods()) {
-      methods.add(method);
+      validMethodNames.add(method.getName());
     }
     handleRemoteInvocation();
   }
@@ -56,11 +56,11 @@ public class TCPWorker<T> implements Runnable {
     } catch (ClassCastException e) {
       send(new RMIException("Received object is not an instance of RemoteCall"));
     }
-    if (!methods.contains(remoteCall.getMethod())) {
+    if (!validMethodNames.contains(remoteCall.getMethodName())) {
       send(new RMIException("Received method is not valid"));
     }
     try {
-      Method methodOnRemoteObject = remoteObject.getClass().getMethod(remoteCall.getMethod().getName());
+      Method methodOnRemoteObject = remoteObject.getClass().getMethod(remoteCall.getMethodName());
       ret = methodOnRemoteObject.invoke(remoteObject, remoteCall.getArgs());
     } catch (NoSuchMethodException e) {
       System.out.println("This should never happen");
