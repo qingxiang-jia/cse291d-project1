@@ -68,7 +68,7 @@ public class MyInvocationHandler implements InvocationHandler {
     } catch (IOException e) {
       System.out.println(e.getMessage());
     }
-    
+
     if(mesRet.getHasException()){
       Object obj = mesRet.getException();
       String theType = mesRet.getExceptionType().getName();

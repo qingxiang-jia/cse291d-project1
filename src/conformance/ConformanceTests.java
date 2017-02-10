@@ -37,7 +37,7 @@ public class ConformanceTests
                          conformance.rmi.RestartTest.class, // passed
                          conformance.rmi.NoAddressTest.class, // passed
                          conformance.rmi.ServiceErrorTest.class, // passed
-                         conformance.rmi.StubTest.class 
+                         conformance.rmi.StubTest.class // passed
 //                         conformance.rmi.EqualsTest.class,
 //                         conformance.rmi.HashCodeTest.class,
 //                         conformance.rmi.ToStringTest.class,
