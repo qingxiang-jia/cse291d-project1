@@ -26,10 +26,10 @@ public class ConformanceTests
         Class<? extends Test>[]     tests =
             new Class[] {//conformance.rmi.CallTest.class, // <- stuck
                          //conformance.rmi.ArgumentTest.class, // passed
-                         conformance.rmi.ReturnTest.class/*,
-                         conformance.rmi.ExceptionTest.class,
-                         conformance.rmi.CompleteCallTest.class,
-                         conformance.rmi.ImplicitStubCallTest.class,
+                         conformance.rmi.ReturnTest.class, // passed
+                         conformance.rmi.ExceptionTest.class, // passed
+                         conformance.rmi.CompleteCallTest.class, // passed
+                         conformance.rmi.ImplicitStubCallTest.class/*,
                          conformance.rmi.NullTest.class,
                          conformance.rmi.RemoteInterfaceTest.class,
                          conformance.rmi.ListenTest.class,
