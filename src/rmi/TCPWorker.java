@@ -107,7 +107,7 @@ public class TCPWorker<T> implements Runnable {
     try {
       out = new ObjectOutputStream(clientSocket.getOutputStream());
       out.flush();
-      Thread.sleep(600);
+      Thread.sleep(10);
 //      while (clientSocket.getInputStream().available() <= 0); //todo
       in = new ObjectInputStream(clientSocket.getInputStream());
     } catch (IOException e) {
