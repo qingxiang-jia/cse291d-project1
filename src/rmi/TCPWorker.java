@@ -59,8 +59,15 @@ public class TCPWorker<T> implements Runnable {
     if (!validMethodNames.contains(remoteCall.getMethodName())) {
       send(new RMIException("Received method is not valid"));
     }
+    if (remoteCall.getParaTypes() == null) {
+      send(new RMIException("Parameter list is empty"));
+    }
+    Class[] parameterTypeArray = null;
+    for (int i = 0; i < remoteCall.getParaTypes().size(); i++) {
+      parameterTypeArray[i] = remoteCall.getParaTypes().get(i);
+    }
     try {
-      Method methodOnRemoteObject = remoteObject.getClass().getMethod(remoteCall.getMethodName());
+      Method methodOnRemoteObject = remoteObject.getClass().getMethod(remoteCall.getMethodName(), parameterTypeArray);
       ret = methodOnRemoteObject.invoke(remoteObject, remoteCall.getArgs());
     } catch (NoSuchMethodException e) {
       System.out.println("This should never happen");
