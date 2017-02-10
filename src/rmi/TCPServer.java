@@ -68,7 +68,7 @@ public class TCPServer<T> implements Runnable {
     return (state == STOPPED);
   }
 
-  public synchronized void stopServer() {
+  public void stopServer() {
     try {
       this.serverSocket.close();
     } catch (IOException e) {

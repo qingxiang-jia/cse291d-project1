@@ -21,6 +21,10 @@ public class OverloadTest
 
         try
         {
+            System.out.println("stub.equals(3) " + stub.equals(3));
+            System.out.println("stub.equals(stub, 3) " + stub.equals(stub, 3));
+            System.out.println("stub.toString(3).equals(Integer.toString(3) " + stub.toString(3).equals(Integer.toString(3)));
+            System.out.println("stub.hashCode(3) != 3 " + (stub.hashCode(3) != 3));
             if(!stub.equals(3) ||
                !stub.equals(stub, 3) ||
                !stub.toString(3).equals(Integer.toString(3)) ||

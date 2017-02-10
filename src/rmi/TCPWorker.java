@@ -58,21 +58,21 @@ public class TCPWorker<T> implements Runnable {
       System.out.println("Received object is not an instance of RemoteCall");
       send(new RemoteReturn(new RMIException("Received object is not an instance of RemoteCall")));
     }
-    if (!validMethodNames.contains(remoteCall.getMethodName())) {
-      System.out.println("Received method is not valid");
-      send(new RemoteReturn(new RMIException("Received method is not valid")));
-    }
-    if (remoteCall.getParaTypes() == null) {
-      System.out.println("Parameter list is null");
-      send(new RemoteReturn(new RMIException("Parameter list is null")));
-    }
-    if (remoteCall.getArgs() == null) {
-      System.out.println("Argument list is null");
-      send(new RemoteReturn(new RMIException("Argument list is null")));
-    }
-    if (remoteCall.getParaTypes().size() != remoteCall.getArgs().size()) {
-      System.out.println("Method parameter quantity does not match actual argument quantity");
-      send(new RemoteReturn(new RMIException("Method parameter quantity does not match actual argument quantity")));
+    try {
+      if (!validMethodNames.contains(remoteCall.getMethodName())) {
+        throw new RMIException("Received method is not valid");
+      }
+      if (remoteCall.getParaTypes() == null) {
+        throw new RMIException("Parameter list is null");
+      }
+      if (remoteCall.getArgs() == null) {
+        throw new RMIException("Argument list is null");
+      }
+      if (remoteCall.getParaTypes().size() != remoteCall.getArgs().size()) {
+        throw new RMIException("Method parameter quantity does not match actual argument quantity");
+      }
+    } catch (RMIException e) {
+      e.printStackTrace();
     }
     Class[] parameterTypeArray = new Class[remoteCall.getParaTypes().size()];
     for (int i = 0; i < remoteCall.getParaTypes().size(); i++) {
@@ -86,14 +86,9 @@ public class TCPWorker<T> implements Runnable {
       }
       methodOnRemoteObject.setAccessible(true);
       ret = methodOnRemoteObject.invoke(remoteObject, args);
-    } catch (NoSuchMethodException e) {
-      System.out.println("This should never happen");
+    } catch (NoSuchMethodException | IllegalAccessException e) {
       e.printStackTrace();
-    } catch (IllegalAccessException e) {
-      System.out.println("Remote object failed to execute your remote call");
-      send(new RemoteReturn(new RMIException("Remote object failed to execute your remote call")));
     } catch (InvocationTargetException e) {
-      System.out.println("InvocationTargetException");
       RemoteReturn rRet = new RemoteReturn(ret);
       rRet.setHasException(Boolean.TRUE);
       rRet.setException(e.getTargetException());
