@@ -155,7 +155,9 @@ public class Skeleton<T> {
    *
    * @param exception The exception that occurred.
    */
-  protected void service_error(RMIException exception) {}
+  protected void service_error(RMIException exception) {
+
+  }
 
   /**
    * Starts the skeleton server.
@@ -176,15 +178,16 @@ public class Skeleton<T> {
       } else {
         tcpServer = new TCPServer(tcpServerAddress);
       }
-      tcpServer.setSkeleton(this);
-      listeningThread = new Thread(tcpServer);
-      listeningThread.start();
+        tcpServer.setSkeleton(this);
+        listeningThread = new Thread(tcpServer);
+        listeningThread.start();
     } catch (IOException e) {
       e.printStackTrace();
       throw new RMIException("Listening socket could not be created or bound" +
           " or listening thread could not be created, or the server has already been started" +
           " and has not since stopped");
     }
+
   }
 
   /**

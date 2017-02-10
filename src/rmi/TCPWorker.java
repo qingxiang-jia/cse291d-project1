@@ -107,13 +107,17 @@ public class TCPWorker<T> implements Runnable {
     try {
       out = new ObjectOutputStream(clientSocket.getOutputStream());
       out.flush();
-      while (clientSocket.getInputStream().available() <= 0);
+      Thread.sleep(600);
+//      while (clientSocket.getInputStream().available() <= 0); //todo
       in = new ObjectInputStream(clientSocket.getInputStream());
     } catch (IOException e) {
+      parent.skeleton.service_error(new RMIException("XXX"));
       System.out.println("Failed to setup objectStreams, exiting");
       e.printStackTrace();
-      stopWorker();
-      System.exit(-1);
+//      stopWorker();
+//      System.exit(-1);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
     }
   }
 

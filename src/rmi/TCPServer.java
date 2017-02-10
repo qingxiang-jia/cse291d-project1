@@ -64,7 +64,6 @@ public class TCPServer<T> implements Runnable {
       registerThread(workerThread);
       workerThread.start();
     }
-    System.out.println("TCPServer stopped");
   }
 
   private synchronized boolean isStopped() {
@@ -83,12 +82,11 @@ public class TCPServer<T> implements Runnable {
 
   public synchronized void restartServer() {
     try {
-      serverSocket = new ServerSocket(serverAddress.getPort(), DEFAULT_BACKLOG, serverAddress.getAddress());
+      this.serverSocket = new ServerSocket(serverAddress.getPort(), DEFAULT_BACKLOG, serverAddress.getAddress());
     } catch (IOException e) {
       e.printStackTrace();
     }
     state = RUNNING;
-    run();
   }
 
   public void registerThread(Thread t) {

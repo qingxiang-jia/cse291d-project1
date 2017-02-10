@@ -24,18 +24,18 @@ public class ConformanceTests
         // Create the test list, the series object, and run the test series.
         @SuppressWarnings("unchecked")
         Class<? extends Test>[]     tests =
-            new Class[] {//conformance.rmi.CallTest.class, // <- stuck
-                         //conformance.rmi.ArgumentTest.class, // passed
+            new Class[] {conformance.rmi.CallTest.class, // passed
+                         conformance.rmi.ArgumentTest.class, // passed
                          conformance.rmi.ReturnTest.class, // passed
                          conformance.rmi.ExceptionTest.class, // passed
                          conformance.rmi.CompleteCallTest.class, // passed
-                         conformance.rmi.ImplicitStubCallTest.class/*,
-                         conformance.rmi.NullTest.class,
-                         conformance.rmi.RemoteInterfaceTest.class,
-                         conformance.rmi.ListenTest.class,
-                         conformance.rmi.RestartTest.class,
-                         conformance.rmi.NoAddressTest.class,
-                         conformance.rmi.ServiceErrorTest.class,
+                         conformance.rmi.ImplicitStubCallTest.class, // passed
+                         conformance.rmi.NullTest.class, // passed
+                         conformance.rmi.RemoteInterfaceTest.class, // passed
+                         conformance.rmi.ListenTest.class, // passed
+                         //conformance.rmi.RestartTest.class, // <- stuck
+                         conformance.rmi.NoAddressTest.class, // passed
+                         conformance.rmi.ServiceErrorTest.class/*, // <- stuck
                          conformance.rmi.StubTest.class,
                          conformance.rmi.EqualsTest.class,
                          conformance.rmi.HashCodeTest.class,
