@@ -2,20 +2,27 @@ package rmi;
 
 import java.io.Serializable;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class RemoteCall implements Serializable {
-  private Method method;
+  private String methodName;
+  private List<Class> paraTypes;
   private List<Object> args;
 
   public RemoteCall(Method method, Object[] args) {
-    this.method = method;
-    this.args = Arrays.asList(args);
+    methodName = method.getName();
+    paraTypes = new ArrayList<Class>(Arrays.asList(method.getParameterTypes()));
+    this.args = new ArrayList<>(Arrays.asList(args));
   }
-
-  public Method getMethod() {
-    return method;
+  
+  public String getMethodName(){
+    return methodName;
+  }
+  
+  public List<Class> getParaTypes(){
+    return paraTypes;
   }
 
   public List<Object> getArgs() {
