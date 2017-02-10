@@ -26,7 +26,7 @@ public class MyInvocationHandler implements InvocationHandler {
     String methodName = method.getName();
     InvocationHandler handler = null;
     
-    if (methodName.equals("equals") && args != null && args.length == 1) {
+    if (methodName.equals("equals") && args != null && args.length == 1) {      
       if (args[0] == null || proxy == null || !Proxy.isProxyClass(args[0].getClass())
           || !((handler = Proxy.getInvocationHandler(args[0])) instanceof MyInvocationHandler)
           || !((MyInvocationHandler) handler).getStubClass().equals(this.stubClass)
