@@ -73,6 +73,11 @@ public class TCPWorker<T> implements Runnable {
       }
     } catch (RMIException e) {
       e.printStackTrace();
+      RemoteReturn rRet = new RemoteReturn(ret);
+      rRet.setHasException(Boolean.TRUE);
+      rRet.setException(e);
+      rRet.setExceptionType(e.getClass());
+      send(rRet);      
     }
     Class[] parameterTypeArray = new Class[remoteCall.getParaTypes().size()];
     for (int i = 0; i < remoteCall.getParaTypes().size(); i++) {
@@ -84,6 +89,7 @@ public class TCPWorker<T> implements Runnable {
       for (int i = 0; i < args.length; i++) {
         args[i] = remoteCall.getArgs().get(i);
       }
+      
       methodOnRemoteObject.setAccessible(true);
       ret = methodOnRemoteObject.invoke(remoteObject, args);
     } catch (NoSuchMethodException | IllegalAccessException e) {

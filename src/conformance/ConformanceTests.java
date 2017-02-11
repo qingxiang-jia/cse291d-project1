@@ -46,8 +46,8 @@ public class ConformanceTests
                          conformance.rmi.ShadowTest.class, //passed
                          conformance.rmi.InheritanceTest.class, //passed
                          conformance.rmi.SubclassTest.class, //passed
-                         conformance.rmi.SecurityTest.class,
-//                         conformance.rmi.ThreadTest.class
+                         conformance.rmi.SecurityTest.class, //passed
+                         conformance.rmi.ThreadTest.class //passed
             };
 
         Series                      series = new Series(tests);

@@ -11,6 +11,7 @@ public class RemoteCall implements Serializable {
   private ArrayList<Class> paraTypes;
   private ArrayList<Object> args;
 
+
   public RemoteCall(Method method, Object[] args) {
     methodName = method.getName();
     paraTypes = new ArrayList<Class>(Arrays.asList(method.getParameterTypes()));
