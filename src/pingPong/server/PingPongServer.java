@@ -1,4 +1,4 @@
-package ClientServer.server;
+package pingPong.server;
 
 import rmi.RMIException;
 

@@ -1,9 +1,9 @@
-package ClientServer.client;
+package pingPong.client;
 
 import java.net.InetSocketAddress;
 
-import ClientServer.server.PingPongServer;
-import ClientServer.server.PingServerFactory;
+import pingPong.server.PingPongServer;
+import pingPong.server.PingServerFactory;
 import rmi.RMIException;
 import rmi.Stub;
 

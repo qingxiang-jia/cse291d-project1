@@ -1,11 +1,12 @@
-package ClientServer.server;
+package pingPong.server;
 
+import java.io.Serializable;
 import java.net.InetSocketAddress;
 
 import rmi.RMIException;
 import rmi.Skeleton;
 
-public class PingServerFactoryImpl implements PingServerFactory {
+public class PingServerFactoryImpl implements PingServerFactory, Serializable {
 
   private static final int DEFAULT_PORT = 8000;
   
