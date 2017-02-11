@@ -33,7 +33,7 @@ public class ConformanceTests
                          conformance.rmi.ImplicitStubCallTest.class, // passed
                          conformance.rmi.NullTest.class, // passed
                          conformance.rmi.RemoteInterfaceTest.class, // passed
-                         conformance.rmi.ListenTest.class, // passed
+                         conformance.rmi.ListenTest.class, // sometimes doesn't passed 
                          conformance.rmi.RestartTest.class, // sometimes doesn't pass
                          conformance.rmi.NoAddressTest.class, // passed
                          conformance.rmi.ServiceErrorTest.class, // passed

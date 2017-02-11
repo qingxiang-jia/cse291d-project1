@@ -23,7 +23,7 @@ public class MyInvocationHandler implements InvocationHandler, Serializable {
   }
 
   @Override
-  public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+  public Object invoke(Object proxy, Method method, Object[] args) throws Throwable, RMIException {
     String methodName = method.getName();
     InvocationHandler handler = null;
     
@@ -54,32 +54,65 @@ public class MyInvocationHandler implements InvocationHandler, Serializable {
     }
     Socket s = new Socket();
     RemoteReturn mesRet = null;
+    ObjectOutputStream out = null;
+    RemoteCall call = null;
+    ObjectInputStream in = null;
     try {
       s.connect(skeletonAddress);
-      RemoteCall call = new RemoteCall(method, args);
-      ObjectOutputStream out = new ObjectOutputStream(s.getOutputStream());
+      s.setReuseAddress(true);
+      s.setSoLinger(true,0);
+      call = new RemoteCall(method, args);
+      out = new ObjectOutputStream(s.getOutputStream());
+      in = new ObjectInputStream(s.getInputStream());
+    } catch (IOException e) {
+      System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+      e.printStackTrace();
+    }      
       
-      try {
-        out.writeObject(call);
-        out.flush();
-      } catch(IOException e) {
-        throw new RMIException(e.getMessage());
-      }
-      
-      ObjectInputStream in = new ObjectInputStream(s.getInputStream());
+    try {
+      out.writeObject(call);
+      out.flush();
+    } catch(IOException e) {
+      System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+      throw new RMIException(e.getMessage());
+    }
+/*    
+    try {
+
+    } catch (IOException e) {
+      System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+      e.printStackTrace();
+    }    
+  */  
+    try {     
       mesRet = (RemoteReturn) in.readObject();
+    } catch (IOException e) {
+      System.out.println("###########################################");
+      e.printStackTrace();
+    }    
+    
+    try {
       in.close();
       out.close();
       s.close();
     } catch (IOException e) {
-      System.out.println(e.getMessage());
+      System.out.println("+++++++++++++++++++++++");
+      e.printStackTrace();
     }
-
     if(mesRet.getHasException()){
-      Object obj = mesRet.getException();
-      String theType = mesRet.getExceptionType().getName();
-      Class<?> theClass = Class.forName(theType);
-      throw (Throwable) theClass.cast(obj);
+      if(mesRet.getExceptionType().equals(RMIException.class)){
+        
+        throw (RMIException) mesRet.getException();
+      }
+      else {
+        Object obj = mesRet.getException();
+        String theType = mesRet.getExceptionType().getName();
+
+        System.out.println("###############################" + theType);
+        
+        Class<?> theClass = Class.forName(theType);
+        throw (Throwable) theClass.cast(obj);
+      }
     }
     
     return mesRet != null ? mesRet.getReturnValue() : null;
