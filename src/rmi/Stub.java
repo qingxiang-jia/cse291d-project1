@@ -125,7 +125,7 @@ public abstract class Stub {
   private static boolean isRemoteInterface(Class c) {
     if (!c.isInterface())
       return false;
-    for (Method m : c.getDeclaredMethods()) {
+    for (Method m : c.getMethods()) {
       if (!new HashSet<>(Arrays.asList(m.getExceptionTypes())).contains(RMIException.class))
         return false;
     }

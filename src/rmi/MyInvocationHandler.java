@@ -28,12 +28,17 @@ public class MyInvocationHandler implements InvocationHandler, Serializable {
     InvocationHandler handler = null;
     
     if (methodName.equals("equals") && args != null && args.length == 1) {      
-      if (args[0] == null || proxy == null || !Proxy.isProxyClass(args[0].getClass())
-          || !((handler = Proxy.getInvocationHandler(args[0])) instanceof MyInvocationHandler)
-          || !((MyInvocationHandler) handler).getStubClass().equals(this.stubClass)
-          || !((MyInvocationHandler) handler).getSkeletonAddress().equals(this.skeletonAddress))
-        return false;
-      return true;
+      try {
+        System.out.println(proxy.getClass().getName());
+        stubClass.getMethod("equals", method.getParameterTypes());
+      } catch (NoSuchMethodException e) {
+        if (args[0] == null || proxy == null || !Proxy.isProxyClass(args[0].getClass())
+            || !((handler = Proxy.getInvocationHandler(args[0])) instanceof MyInvocationHandler)
+            || !((MyInvocationHandler) handler).getStubClass().equals(this.stubClass)
+            || !((MyInvocationHandler) handler).getSkeletonAddress().equals(this.skeletonAddress))
+          return false;
+        return true;
+      }      
     } else if (methodName.equals("hashCode") && (args == null || args.length == 0)) {
       int code1 = (stubClass != null) ? stubClass.hashCode() * 17 : 0;
       int code2 = (skeletonAddress != null) ? skeletonAddress.hashCode() * 17 : 0;

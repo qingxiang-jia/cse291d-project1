@@ -32,9 +32,9 @@ public class Skeleton<T> {
   Class<T> clazz;
 
   private boolean isRemoteInterface(Class<T> c) { // rmi.RMIException
-    if (c.getMethods().length == 0) {
-      return false; // if no methods at all, false
-    }
+//    if (c.getMethods().length == 0) {
+//      return false; // if no methods at all, false
+//    }
     for (Method method : c.getMethods()) {
       boolean hasRMIException = false;
       for (Class exceptionClass : method.getExceptionTypes()) {
