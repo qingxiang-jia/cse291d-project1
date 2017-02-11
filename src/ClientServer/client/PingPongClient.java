@@ -10,6 +10,7 @@ import rmi.Stub;
 public class PingPongClient {
   private PingPongServer server;
   private static int DEFAULT_PORT = 8000;
+  
   private final int PIN_TIME = 4;
 
   public PingPongClient(PingServerFactory factory) {
@@ -36,7 +37,6 @@ public class PingPongClient {
       }
     }
     System.out.println(completed + " Tests Completed, " + failed + " Tests Failed");
-
   }
 
   public static void main(String[] args) {
@@ -46,7 +46,7 @@ public class PingPongClient {
   private static void runClient(String[] args) {
     int port = (args.length == 1) ? Integer.parseInt(args[0])
         : (args.length == 2) ? Integer.parseInt(args[1]) : DEFAULT_PORT;
-    String hostName = (args.length == 2) ? args[0] : null;
+    String hostName = (args.length == 2) ? args[0] : "localhost";
     InetSocketAddress address = new InetSocketAddress(hostName, port);
     PingPongClient client = new PingPongClient(Stub.create(PingServerFactory.class, address));
     client.pingTest();
