@@ -60,7 +60,7 @@ public class MyInvocationHandler implements InvocationHandler, Serializable {
     try {
       s.connect(skeletonAddress);
       s.setReuseAddress(true);
-      s.setSoLinger(true,0);
+//      s.setSoLinger(true,0);
       call = new RemoteCall(method, args);
       out = new ObjectOutputStream(s.getOutputStream());
       in = new ObjectInputStream(s.getInputStream());
